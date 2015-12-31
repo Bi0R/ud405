@@ -2,10 +2,13 @@ package com.udacity.gamedev.starfield;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.Random;
 
 /**
  * TODO: Start here!
@@ -40,38 +43,57 @@ public class Starfield extends ApplicationAdapter {
     @Override
     public void create() {
         // TODO: Initialize a shapeRenderer
-
+        shapeRenderer = new ShapeRenderer();
         // TODO: Call initStars
+        initStars(STAR_DENSITY);
 
     }
 
     public void initStars(float density) {
-        // TODO: Figure out how many stars to draw. You'll need the screen dimensions, which you can get using Gdx.graphics.getWidth() and Gdx.graphics.getHeight().
+        // TODO: Figure out how many stars to draw. You'll need the screen dimensions, which you can get using Gdx.graphics.getWidth() and Gdx.graphics.getHeight()
+
+        int width = Gdx.graphics.getWidth();
+        int height = Gdx.graphics.getHeight();
+        int starsDensity = (int)(width * height * density);
 
         // TODO: Create a new array of Vector2's to hold the star positions
+        stars = new Array<Vector2>(starsDensity);
 
         // TODO: Use java.util.Random to fill the array of star positions
+        Random generator = new Random();
+        for (int i=0; i<starsDensity;i++){
+            int x = generator.nextInt(width);
+            int y = generator.nextInt(height);
+
+            stars.add(new Vector2(x, y));
+        }
 
     }
 
     @Override
     public void render() {
         // TODO: Make the night sky black
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // TODO: Begin a shapeRenderer batch using ShapeType.Point
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
+        shapeRenderer.setColor(Color.WHITE);
 
         // TODO: Loop through the star positions and use shapeRenderer to draw points
+        for (Vector2 star: stars){
+            shapeRenderer.point(star.x, star.y, 0);
+        }
 
         // TODO: End the shapeRenderer batch
+        shapeRenderer.end();
 
     }
 
     @Override
     public void dispose() {
         // TODO: Dispose of our ShapeRenderer
-
+        shapeRenderer.dispose();
         super.dispose();
     }
 }
