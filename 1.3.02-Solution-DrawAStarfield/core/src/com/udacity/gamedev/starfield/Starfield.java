@@ -2,6 +2,7 @@ package com.udacity.gamedev.starfield;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -38,6 +39,7 @@ public class Starfield extends ApplicationAdapter {
     private static final float STAR_DENSITY = 0.1f;
     ShapeRenderer shapeRenderer;
     Array<Vector2> stars;
+    Array<Vector2> milkyWay;
 
     @Override
     public void create () {
@@ -52,13 +54,20 @@ public class Starfield extends ApplicationAdapter {
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         int starCount = (int)(screenHeight * screenWidth * density);
+        int milkyWayCount = (int) ((screenHeight*.25)*(screenWidth)*(0.3));
         // TODO: Create a new array of Vector2's to hold the star positions
         stars = new Array<Vector2>(starCount);
+        milkyWay = new Array<Vector2>(milkyWayCount);
         // TODO: Use java.util.Random to fill the array of star positions
         Random random = new Random();
         for (int i = 0; i < starCount; i++){
             int x = random.nextInt(screenWidth);
             int y = random.nextInt(screenHeight);
+            stars.add(new Vector2(x, y));
+        }
+        for (int i = 0; i < milkyWayCount; i++){
+            int x = random.nextInt(screenWidth);
+            int y = (int)((screenHeight*0.25)+random.nextInt((int)(screenHeight*0.25)));
             stars.add(new Vector2(x, y));
         }
     }
@@ -74,7 +83,11 @@ public class Starfield extends ApplicationAdapter {
         // TODO: Begin a shapeRenderer batch using ShapeType.Point
         shapeRenderer.begin(ShapeType.Point);
         // TODO: Loop through the star positions and use shapeRenderer to draw points
+        shapeRenderer.setColor(Color.CYAN);
         for (Vector2 star : stars){
+            shapeRenderer.point(star.x, star.y, 0);
+        }
+        for (Vector2 star : milkyWay){
             shapeRenderer.point(star.x, star.y, 0);
         }
         // TODO: End the shapeRenderer batch
