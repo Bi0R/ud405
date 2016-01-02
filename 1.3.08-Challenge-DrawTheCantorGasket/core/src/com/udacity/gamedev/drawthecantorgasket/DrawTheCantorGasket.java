@@ -2,9 +2,11 @@ package com.udacity.gamedev.drawthecantorgasket;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /*
 
@@ -18,6 +20,7 @@ public class DrawTheCantorGasket extends ApplicationAdapter {
 
     ShapeRenderer shapeRenderer;
     // TODO: Set a constant for how many recursions to draw. 5 is a good place to start
+    public static final int recursions = 5;
 
     @Override
     public void create () {
@@ -34,10 +37,15 @@ public class DrawTheCantorGasket extends ApplicationAdapter {
         Rectangle bounds = findLargestSquare();
 
         // TODO: Begin a filled shapeRenderer batch
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         // TODO: Draw a white square matching the bounds
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
 
         // TODO: Set the working color to black, and call punchCantorGasket with the bounds
+        shapeRenderer.setColor(Color.BLACK);
+        punchCantorGasket(bounds.x, bounds.y, bounds.width, 5);
 
         // TODO: End the batch
         shapeRenderer.end();
@@ -46,10 +54,28 @@ public class DrawTheCantorGasket extends ApplicationAdapter {
 
     private void punchCantorGasket(float x, float y, float size, int recursions){
         // TODO: Base case, if recursions = 0, return
+        if (recursions == 0)
+            return;
+        float side = size/3;
 
         // TODO: Draw a black square in the middle square
+        //shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        //shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(x+side, y+side, side, side );
 
         // TODO: Call punchCantorGasket on all 8 other squares
+        punchCantorGasket(x,              y, side,recursions - 1);
+        punchCantorGasket(x + side,       y, side,recursions - 1);
+        punchCantorGasket(x + (side * 2), y, side,recursions - 1);
+
+        punchCantorGasket(x,              y + side,side,recursions-1);
+        punchCantorGasket(x + (side * 2), y + side,side,recursions-1);
+
+        punchCantorGasket(x,              y + (side * 2),side,recursions-1);
+        punchCantorGasket(x + side,       y + (side * 2),side,recursions-1);
+        punchCantorGasket(x + (side * 2), y + (side * 2),side,recursions-1);
+
+        return;
 
     }
 
