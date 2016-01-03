@@ -3,6 +3,7 @@ package com.udacity.gamedev.orthographiccamera;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -27,6 +28,7 @@ public class OrthographicCameraExercise extends ApplicationAdapter {
     long timeCreated;
 
     //TODO: Declare an OrthographicCamera
+    OrthographicCamera camera;
 
 
     @Override
@@ -35,9 +37,11 @@ public class OrthographicCameraExercise extends ApplicationAdapter {
         timeCreated = TimeUtils.millis();
 
         // TODO: Initialize the camera
+        camera = new OrthographicCamera();
 
 
         // TODO: Set the camera's position to the center of the circle's movement (X_CENTER, Y_CENTER)
+        camera.position.set(X_CENTER, Y_CENTER, 0);
 
     }
 
@@ -50,9 +54,12 @@ public class OrthographicCameraExercise extends ApplicationAdapter {
     public void resize(int width, int height) {
 
         // TODO: Calculate the aspect ratio (width / height)
+        float aspectRatio = 1.0f*width/height;
 
 
         // TODO: Set the camera's viewport height taking into account the ball's movement and radius
+        camera.viewportHeight =  (Y_AMPLITUDE+BALL_RADIUS)*2;
+        camera.viewportWidth = camera.viewportHeight*aspectRatio;
 
 
         // TODO: Set the camera's viewport width to maintain the aspect ratio
@@ -65,9 +72,11 @@ public class OrthographicCameraExercise extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // TODO: Call update() on the camera
+        camera.update();
 
 
         // TODO: Set the SceneRenderer's projection matrix equal to the camera's combined matrix
+        renderer.setProjectionMatrix(camera.combined);
 
 
         renderer.begin(ShapeType.Filled);
